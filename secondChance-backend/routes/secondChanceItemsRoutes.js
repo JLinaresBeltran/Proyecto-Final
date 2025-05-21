@@ -26,7 +26,7 @@ const upload = multer({ storage: storage });
 router.get('/', async (req, res, next) => {
     logger.info('/ called');
     try {
-        //Step 2: task 1 - insert code here
+        const db = await connectToDatabase();
         //Step 2: task 2 - insert code here
         //Step 2: task 3 - insert code here
         //Step 2: task 4 - insert code here
@@ -41,10 +41,10 @@ router.get('/', async (req, res, next) => {
 });
 
 // Add a new item
-router.post('/', {Step 3: Task 6 insert code here}, async(req, res,next) => {
+router.post('/', async (req, res, next) => {
     try {
 
-        //Step 3: task 1 - insert code here
+        const db = await connectToDatabase();
         //Step 3: task 2 - insert code here
         //Step 3: task 3 - insert code here
         //Step 3: task 4 - insert code here
@@ -58,7 +58,7 @@ router.post('/', {Step 3: Task 6 insert code here}, async(req, res,next) => {
 // Get a single secondChanceItem by ID
 router.get('/:id', async (req, res, next) => {
     try {
-        //Step 4: task 1 - insert code here
+        const db = await connectToDatabase();
         //Step 4: task 2 - insert code here
         //Step 4: task 3 - insert code here
         //Step 4: task 4 - insert code here
@@ -70,7 +70,7 @@ router.get('/:id', async (req, res, next) => {
 // Update and existing item
 router.put('/:id', async(req, res,next) => {
     try {
-        //Step 5: task 1 - insert code here
+        const db = await connectToDatabase();
         //Step 5: task 2 - insert code here
         //Step 5: task 3 - insert code here
         //Step 5: task 4 - insert code here
@@ -83,7 +83,7 @@ router.put('/:id', async(req, res,next) => {
 // Delete an existing item
 router.delete('/:id', async(req, res,next) => {
     try {
-        //Step 6: task 1 - insert code here
+        const db = await connectToDatabase();
         //Step 6: task 2 - insert code here
         //Step 6: task 3 - insert code here
         //Step 6: task 4 - insert code here
