@@ -20,8 +20,7 @@ connectToDatabase()
   })
   .catch((e) => console.error('Failed to connect to DB', e));
 
-// ✅ Importación de rutas
-//const authRoutes = require('./routes/auth');
+// ✅ Tarea 1: Importación de rutas
 const secondChanceItemsRoutes = require('./routes/secondChanceItemsRoutes');
 const searchRoutes = require('./routes/searchRoutes');
 
@@ -30,11 +29,9 @@ const pinoHttp = require('pino-http');
 const logger = require('./logger');
 app.use(pinoHttp({ logger }));
 
-// ✅ Uso de rutas
-//app.use('/auth', authRoutes);
-app.use('/items', secondChanceItemsRoutes);
-app.use('/gifts', searchRoutes);
-
+// ✅ Tarea 2: Uso de rutas - CORREGIDO
+app.use('/api/secondchance/items', secondChanceItemsRoutes);
+app.use('/api/secondchance/search', searchRoutes);
 
 // Ruta base
 app.get("/", (req, res) => {
