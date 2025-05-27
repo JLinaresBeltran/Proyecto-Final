@@ -13,6 +13,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "tu_clave_secreta";
 const auth = (req, res, next) => {
     // Obtener el token del header
     const token = req.header('x-auth-token');
+    
 
     // Verificar si no hay token
     if (!token) {
