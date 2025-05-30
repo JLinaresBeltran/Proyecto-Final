@@ -2,6 +2,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const pinoLogger = require('./logger');
 const connectToDatabase = require('./models/db');
 const { loadData } = require("./util/import-mongo/index");
@@ -12,6 +13,8 @@ const port = 3060;
 // Middleware
 app.use("*", cors());
 app.use(express.json());
+
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 // Conexión a MongoDB una sola vez al iniciar el servidor
 connectToDatabase()
