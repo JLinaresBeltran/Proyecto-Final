@@ -4,24 +4,60 @@ on:
     branches: [master, main]
   pull_request:
     branches: [master, main]
+
 jobs:
   lint_js:
-      name: Lint JavaScript Files
-      runs-on: ubuntu-latest
-      steps:
+    name: Lint JavaScript Files
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        
       - name: Install Node.js
         uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Create ESLint Configuration
+        run: |
+          cat > .eslintrc.js << 'EOF'
+          module.exports = {
+            env: {
+              browser: true,
+              es2021: true,
+              node: true
+            },
+            extends: [
+              'standard'
+            ],
+            parserOptions: {
+              ecmaVersion: 'latest',
+              sourceType: 'module'
+            },
+            rules: {
+              'quotes': ['error', 'single'],
+              'semi': ['error', 'never'],
+              'no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }]
+            }
+          }
+          EOF
+          
       - name: Install and Run Linter
         run: |
-          # This command finds all JavaScript files recursively and runs JSHint on them
           npm init -y
-          npm install eslint eslint-config-standard eslint@^8.0.1 eslint-plugin-import@^2.25.2 eslint-plugin-n@^16.0.0  eslint-plugin-promise@^6.0.0
-          find ./secondChance-backend -name app.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
-          # find ./secondChance-backend -name auth.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
+          npm install eslint eslint-config-standard eslint-plugin-import eslint-plugin-n eslint-plugin-promise
+          
+          # Lint app.js (ya funcionaba)
+          ./node_modules/.bin/eslint ./secondChance-backend/app.js
+          
+          # PRIMERA LÍNEA DESCOMENTADA: auth.js
+          ./node_modules/.bin/eslint ./secondChance-backend/auth.js
+          
+          # Estas líneas siguen comentadas por ahora:
           # find ./secondChance-backend -name secondChanceItemsRoutes.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
           # find ./secondChance-backend -name searchRoutes.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
           # find ./secondChance-backend -name index.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
           # find ./sentiment -name index.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
-          echo "Linted all the js files successfully"
+          
+          echo "Linted app.js and auth.js successfully"
