@@ -1,4 +1,4 @@
-/*jshint esversion: 8 */
+/* Archivo App.js */
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
@@ -7,13 +7,11 @@ const pinoLogger = require('./logger')
 
 const connectToDatabase = require('./models/db')
 
-const { loadData } = require("./util/import-mongo/index")
-
 const app = express()
 const port = 3060
 
 // Middleware
-app.use("*", cors())
+app.use('*', cors())
 app.use(express.json())
 
 app.use('/images', express.static(path.join(__dirname, 'public/images')))
@@ -46,9 +44,9 @@ app.use('/api/secondchance/search', searchRoutes)
 app.use('/api/auth', authRoutes)
 
 // Ruta base
-app.get("/", (req, res) => {
+app.get('/', (req, res) => {
   res.send('Inside the server')
-});
+})
 
 // Manejador de errores global
 app.use((err, req, res, next) => {
@@ -63,4 +61,4 @@ app.listen(port, () => {
   console.log(`Server running on port ${port}`)
 })
 
-module.exports = app; // Exportar para testing
+module.exports = app
