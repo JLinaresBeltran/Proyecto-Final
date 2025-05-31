@@ -67,16 +67,29 @@ jobs:
           # echo "=== Analizando auth.js ==="
           # ./node_modules/.bin/eslint ./secondChance-backend/auth.js
           
-           echo "=== Analizando secondChanceItemsRoutes.js ==="  
-           ./node_modules/.bin/eslint ./secondChance-backend/secondChanceItemsRoutes.js
+          # ARCHIVO QUE NO EXISTE - comentado de nuevo:
+          # echo "=== Analizando secondChanceItemsRoutes.js ==="  
+          # ./node_modules/.bin/eslint ./secondChance-backend/secondChanceItemsRoutes.js
+          
+          # PRÓXIMA LÍNEA DESCOMENTADA: logger.js (sí existe)
+          echo "=== Analizando logger.js ==="
+          if [ -f "./secondChance-backend/logger.js" ]; then
+            ./node_modules/.bin/eslint --fix ./secondChance-backend/logger.js || true
+            ./node_modules/.bin/eslint ./secondChance-backend/logger.js
+          else
+            echo "❌ logger.js no encontrado"
+          fi
           
           # echo "=== Analizando searchRoutes.js ==="
           # ./node_modules/.bin/eslint ./secondChance-backend/searchRoutes.js
           
-          # echo "=== Analizando index.js (backend) ==="
-          # ./node_modules/.bin/eslint ./secondChance-backend/index.js
+          # echo "=== Analizando models/db.js ==="
+          # ./node_modules/.bin/eslint ./secondChance-backend/models/db.js
           
-          # echo "=== Analizando index.js (sentiment) ==="
+          # echo "=== Analizando sentiment/index.js ==="
           # ./node_modules/.bin/eslint ./sentiment/index.js
+          
+          # echo "=== Analizando sentiment/logger.js ==="
+          # ./node_modules/.bin/eslint ./sentiment/logger.js
           
           echo "✅ Proceso de linting completado"
