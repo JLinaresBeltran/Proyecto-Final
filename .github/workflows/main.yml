@@ -67,8 +67,8 @@ jobs:
           # echo "=== Analizando auth.js ==="
           # ./node_modules/.bin/eslint ./secondChance-backend/auth.js
           
-          # echo "=== Analizando secondChanceItemsRoutes.js ==="  
-          # ./node_modules/.bin/eslint ./secondChance-backend/secondChanceItemsRoutes.js
+           echo "=== Analizando secondChanceItemsRoutes.js ==="  
+           ./node_modules/.bin/eslint ./secondChance-backend/secondChanceItemsRoutes.js
           
           # echo "=== Analizando searchRoutes.js ==="
           # ./node_modules/.bin/eslint ./secondChance-backend/searchRoutes.js
