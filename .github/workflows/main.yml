@@ -63,15 +63,16 @@ jobs:
             echo "❌ app.js no encontrado"
           fi
           
-          # Estas líneas están comentadas - las descomentaremos paso a paso:
+          # Archivos que NO existen - mantengo comentados:
           # echo "=== Analizando auth.js ==="
           # ./node_modules/.bin/eslint ./secondChance-backend/auth.js
-          
-          # ARCHIVO QUE NO EXISTE - comentado de nuevo:
           # echo "=== Analizando secondChanceItemsRoutes.js ==="  
           # ./node_modules/.bin/eslint ./secondChance-backend/secondChanceItemsRoutes.js
+          # echo "=== Analizando searchRoutes.js ==="
+          # ./node_modules/.bin/eslint ./secondChance-backend/searchRoutes.js
           
-          # PRÓXIMA LÍNEA DESCOMENTADA: logger.js (sí existe)
+          # TODAS LAS LÍNEAS DESCOMENTADAS - archivos que SÍ existen:
+          
           echo "=== Analizando logger.js ==="
           if [ -f "./secondChance-backend/logger.js" ]; then
             ./node_modules/.bin/eslint --fix ./secondChance-backend/logger.js || true
@@ -80,16 +81,28 @@ jobs:
             echo "❌ logger.js no encontrado"
           fi
           
-          # echo "=== Analizando searchRoutes.js ==="
-          # ./node_modules/.bin/eslint ./secondChance-backend/searchRoutes.js
+          echo "=== Analizando models/db.js ==="
+          if [ -f "./secondChance-backend/models/db.js" ]; then
+            ./node_modules/.bin/eslint --fix ./secondChance-backend/models/db.js || true
+            ./node_modules/.bin/eslint ./secondChance-backend/models/db.js
+          else
+            echo "❌ models/db.js no encontrado"
+          fi
           
-          # echo "=== Analizando models/db.js ==="
-          # ./node_modules/.bin/eslint ./secondChance-backend/models/db.js
+          echo "=== Analizando sentiment/index.js ==="
+          if [ -f "./sentiment/index.js" ]; then
+            ./node_modules/.bin/eslint --fix ./sentiment/index.js || true
+            ./node_modules/.bin/eslint ./sentiment/index.js
+          else
+            echo "❌ sentiment/index.js no encontrado"
+          fi
           
-          # echo "=== Analizando sentiment/index.js ==="
-          # ./node_modules/.bin/eslint ./sentiment/index.js
-          
-          # echo "=== Analizando sentiment/logger.js ==="
-          # ./node_modules/.bin/eslint ./sentiment/logger.js
+          echo "=== Analizando sentiment/logger.js ==="
+          if [ -f "./sentiment/logger.js" ]; then
+            ./node_modules/.bin/eslint --fix ./sentiment/logger.js || true
+            ./node_modules/.bin/eslint ./sentiment/logger.js
+          else
+            echo "❌ sentiment/logger.js no encontrado"
+          fi
           
           echo "✅ Proceso de linting completado"
