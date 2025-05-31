@@ -4,105 +4,35 @@ on:
     branches: [master, main]
   pull_request:
     branches: [master, main]
-
 jobs:
   lint_js:
-    name: Lint JavaScript Files
-    runs-on: ubuntu-latest
-    steps:
+      name: Lint JavaScript Files
+      runs-on: ubuntu-latest
+      steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        
       - name: Install Node.js
         uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-          
-      - name: Create ESLint Configuration
-        run: |
-          cat > .eslintrc.js << 'EOF'
-          module.exports = {
-            env: {
-              browser: true,
-              es2021: true,
-              node: true
-            },
-            extends: [
-              'standard'
-            ],
-            parserOptions: {
-              ecmaVersion: 'latest',
-              sourceType: 'module'
-            },
-            rules: {
-              'quotes': ['error', 'single'],
-              'semi': ['error', 'never'],
-              'no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }]
-            }
-          }
-          EOF
-          
       - name: Install and Run Linter
         run: |
+          # This command finds all JavaScript files recursively and runs ESLint on them
           npm init -y
-          npm install eslint eslint-config-standard eslint-plugin-import eslint-plugin-n eslint-plugin-promise
-          
-          echo "=== Verificando qué archivos JavaScript existen ==="
-          find . -name "*.js" -type f | head -20
-          
-          echo "=== Auto-corrigiendo errores automáticos ==="
-          if [ -f "./secondChance-backend/app.js" ]; then
-            ./node_modules/.bin/eslint --fix ./secondChance-backend/app.js || true
-          fi
-          
-          echo "=== Analizando app.js ==="
-          if [ -f "./secondChance-backend/app.js" ]; then
-            ./node_modules/.bin/eslint ./secondChance-backend/app.js
-          else
-            echo "❌ app.js no encontrado"
-          fi
-          
-          # Archivos que NO existen - mantengo comentados:
-          # echo "=== Analizando auth.js ==="
-          # ./node_modules/.bin/eslint ./secondChance-backend/auth.js
-          # echo "=== Analizando secondChanceItemsRoutes.js ==="  
-          # ./node_modules/.bin/eslint ./secondChance-backend/secondChanceItemsRoutes.js
-          # echo "=== Analizando searchRoutes.js ==="
-          # ./node_modules/.bin/eslint ./secondChance-backend/searchRoutes.js
-          
-          # TODAS LAS LÍNEAS DESCOMENTADAS - archivos que SÍ existen:
-          
-          echo "=== Analizando logger.js ==="
-          if [ -f "./secondChance-backend/logger.js" ]; then
-            ./node_modules/.bin/eslint --fix ./secondChance-backend/logger.js || true
-            ./node_modules/.bin/eslint ./secondChance-backend/logger.js
-          else
-            echo "❌ logger.js no encontrado"
-          fi
-          
-          echo "=== Analizando models/db.js ==="
-          if [ -f "./secondChance-backend/models/db.js" ]; then
-            ./node_modules/.bin/eslint --fix ./secondChance-backend/models/db.js || true
-            ./node_modules/.bin/eslint ./secondChance-backend/models/db.js
-          else
-            echo "❌ models/db.js no encontrado"
-          fi
-          
-          echo "=== Analizando sentiment/index.js ==="
-          if [ -f "./sentiment/index.js" ]; then
-            ./node_modules/.bin/eslint --fix ./sentiment/index.js || true
-            ./node_modules/.bin/eslint ./sentiment/index.js
-          else
-            echo "❌ sentiment/index.js no encontrado"
-          fi
-          
-          echo "=== Analizando sentiment/logger.js ==="
-          if [ -f "./sentiment/logger.js" ]; then
-            ./node_modules/.bin/eslint --fix ./sentiment/logger.js || true
-            ./node_modules/.bin/eslint ./sentiment/logger.js
-          else
-            echo "❌ sentiment/logger.js no encontrado"
-          fi
-          
-          echo "✅ Proceso de linting completado"
+          npm install eslint eslint-config-standard eslint@^8.0.1 eslint-plugin-import@^2.25.2 eslint-plugin-n@^16.0.0  eslint-plugin-promise@^6.0.0
+          cat > .eslintrc.js << 'EOF'
+          module.exports = {
+            env: { browser: true, es2021: true, node: true },
+            extends: ['standard'],
+            parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
+            rules: { 'quotes': ['error', 'single'], 'semi': ['error', 'never'], 'no-unused-vars': ['error', { 'argsIgnorePattern': '^_', 'varsIgnorePattern': '^_' }] }
+          }
+          EOF
+          find ./secondChance-backend -name app.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
+          find ./secondChance-backend -name logger.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
+          find ./secondChance-backend/models -name db.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
+          find ./sentiment -name index.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
+          find ./sentiment -name logger.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
+          # find ./secondChance-backend -name auth.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
+          # find ./secondChance-backend -name secondChanceItemsRoutes.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
+          # find ./secondChance-backend -name searchRoutes.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
+          # find ./secondChance-backend -name index.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
+          echo "Linted all the js files successfully"
