@@ -49,7 +49,7 @@ app.get('/', (req, res) => {
 })
 
 // Manejador de errores global
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
   logger.error(err)
   console.error(err)
   res.status(500).send('Internal Server Error')
